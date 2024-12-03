@@ -85,14 +85,22 @@ type DecToString<Digs> = Digs extends [] ? '' :
 
 // AoC
 
-type Part1<I> =
+type Part1<Acc, I> =
   I extends `${infer _}mul(${infer I}` ?
   ParseDec<I> extends [infer A, infer I] ?
   I extends `,${infer I}` ?
   ParseDec<I> extends [infer B, infer I] ?
   I extends `)${infer I}` ?
-  BinAdd<BinMul<A, B>, Part1<I>>
-  : Part1<I> : Part1<I> : Part1<I> : Part1<I> : [];
+  Part1<BinAdd<Acc, BinMul<A, B>>, I>
+  : Part1<Acc, I> : Part1<Acc, I> : Part1<Acc, I> : Part1<Acc, I> : Acc;
 
-type Output = DecToString<Part1<Input>>;
+type Part2<Acc, I> =
+  I extends `${infer R}do()${infer L}` ?
+    Part2<Part2B<Acc, R>, L> : Part2B<Acc, I>;
+
+type Part2B<Acc, I> =
+  I extends `${infer R}don't()${infer _}` ?
+    Part1<Acc, R> : Part1<Acc, I>;
+
+type Output = DecToString<Part2<[], Input>>;
 type Input = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
