@@ -1,16 +1,29 @@
 {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 {-# LANGUAGE ViewPatterns, TypeApplications #-}
+import Data.Bifunctor (Bifunctor(bimap))
+import Data.List (sort)
+import qualified Data.Map as Map
 
 main = getContents >>= (print . parts . lines)
 
 parts x = (part1 x, part2 x)
 
 
--- PART 1
+-- PARTS
 
-part1 x = 0
+parseLine (map (read @Int) . words -> [a, b]) = (a, b)
 
+part pre join post =
+    sum .
+    post .
+    uncurry join .
+    bimap pre pre .
+    unzip .
+    map parseLine
 
--- PART 2
+part1 = part sort (zipWith (-)) (map abs)
 
-part2 x = 0
+part2 = part
+    (Map.fromListWith (+) . map (,1))
+    (Map.intersectionWith (*))
+    (map (uncurry (*)) . Map.toList)
