@@ -1,5 +1,5 @@
 {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
-{-# LANGUAGE ViewPatterns, TypeApplications #-}
+{-# LANGUAGE ViewPatterns #-}
 import Data.Bifunctor (Bifunctor(bimap))
 import Data.List (sort)
 import qualified Data.Map as Map
