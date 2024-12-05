@@ -1,0 +1,7 @@
+&fras "input.txt"
+⊜∘ ⊸≠@\n
+
+{⍥(⍉⇌.)3}              # 4 directions
+⊂ ⍚(⍉ ⊞⬚@ ↻ ⍉⊟.⇡4 ¤) . # add diagonals
+≡(/+♭ ◇⌕"XMAS")        # count hits
+/+

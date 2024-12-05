@@ -1,0 +1,9 @@
+&fras "input.txt"
+⊜(□⊜⋕ ⊸≠@ )⊸≠@\n
+
+/+ ≡◇(
+  ⍉≡▽ /≠°⍉ ⇡↯2 ⧻⟜¤  # remove one
+  ↘1-↻¯1.           # differences
+  ↥∩(/↧ ↧⊓≥≤1,3) ¯. # in range
+  /↥
+)

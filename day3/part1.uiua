@@ -1,0 +1,4 @@
+&fras "input.txt"
+
+regex $"mul\\((\\d+),(\\d+)\\)"
+/+ /× ∵⋕ ↘1⍉
