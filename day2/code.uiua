@@ -1,0 +1,10 @@
+&fras "input.txt"
+⊜(□⊜⋕⊸≠@ )⊸≠@\n
+
+InRange ← ↥∩(/↧ ↧⊓≥≤1,3) ¯.
+IsSafe  ← InRange ↘1-↻¯1.
+
+RemoveOne ← ≡▽ /≠°⍉ ⇡↯2 ⧻⟜¤
+IsSafeB   ← /↥ IsSafe ⍉ RemoveOne
+
+∩/+ ⊃ ≡◇IsSafe ≡◇IsSafeB

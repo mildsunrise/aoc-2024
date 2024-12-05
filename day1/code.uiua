@@ -1,0 +1,7 @@
+&fras "input.txt"
+⊜(⊜⋕⊸≠@ )⊸≠@\n
+
+PartA ← /+ ⌵ /- ≡⍆
+PartB ← /+ /× ⬚0⊂ ⬚0≡⊕⧻ ⍜♭⊛. ⟜(◴♭)
+
+⊃PartA PartB ⍉

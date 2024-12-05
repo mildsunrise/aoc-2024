@@ -1,0 +1,9 @@
+&fras "input.txt"
+
+FindMul ← regex $"mul\\((\\d+),(\\d+)\\)"
+PartA   ← /+ /× ∵⋕ ↘1⍉ FindMul
+
+SplitDo ← ⊜(⊢ ⊜□ ¬⊸⦷"don't()") ¬⊸⦷"do()"
+PartB   ← /+ ≡PartA SplitDo
+
+⊃PartA PartB
