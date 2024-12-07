@@ -1,8 +1,10 @@
 {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 {-# LANGUAGE ViewPatterns #-}
 import Data.List.Split (splitOn)
-import Data.Foldable1 (foldlM1)
-import Data.List.NonEmpty (fromList)
+import Data.Foldable (foldrM)
+import Control.Monad (guard)
+import Data.List.Extra (stripSuffix)
+import Data.Maybe (mapMaybe)
 
 main = getContents >>= (print . parts . lines)
 
@@ -12,11 +14,11 @@ parts x = (part1 x, part2 x)
 -- PARTS
 
 parseEquation (splitOn ":" -> [a, b]) =
-    (read @Int a, fromList $ map read $ words b)
+    (read @Int a, map read $ words b)
 
-isValid ops (r, xs) = elem r $ foldlM1 step xs
+isValid ops (r, x : xs) = elem x $ foldrM step r xs
   where
-    step a b = filter (<= r) $ map (\f -> f a b) ops
+    step a b = mapMaybe (\f -> f a b) ops
 
 part ops =
     sum .
@@ -24,7 +26,9 @@ part ops =
     filter (isValid ops) .
     map parseEquation
 
-concatNum x y = read (show x ++ show y)
+addOp y r = x <$ guard (x > 0) where x = r - y
+mulOp y r = x <$ guard (x*y == r) where x = div r y
+catOp y r = read . ('0' :) <$> stripSuffix (show y) (show r)
 
-part1 = part [(+), (*)]
-part2 = part [(+), (*), concatNum]
+part1 = part [addOp, mulOp]
+part2 = part [addOp, mulOp, catOp]
