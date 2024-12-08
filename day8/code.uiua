@@ -1,0 +1,27 @@
+# Experimental!
+&fras "input.txt"
+⊜∘⊸≠@\n
+
+⟜△
+
+# collect pairs of antennas
+/◇⊂ ⊕(□⧅<2)⊛ :⟜⊡⊚≠@..
+
+PartA ← (
+  ⊂⍜⍉⇌.      # add other direction
+  /-×1_2⍉    # antinodes
+  ⍜⍉◴        # deduplicate
+  /+/××⊓≥>0. # count in bounds
+)
+
+PartB ← (
+  ⊙(¤⍉⊟0-1) # shape → min/max bounds
+  ⧻◴ /◇⊂ ⍚(
+    ÷/∨. ⊃/-⊢        # base + vector
+    ≡⍥⇌<0 ⟜:⟜÷⊙(:⟜-) # bounds table
+    ⍜¯∩(⌊/↧) °⊟⍉     # integer range
+    +⊙¤ ×⊙¤ +⟜(⇡+1-) # point array
+  )
+)
+
+⊃PartA PartB
