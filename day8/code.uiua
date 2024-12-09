@@ -1,4 +1,3 @@
-# Experimental!
 &fras "input.txt"
 ⊜∘⊸≠@\n
 
@@ -17,7 +16,7 @@ PartA ← (
 PartB ← (
   ⊙(¤⍉⊟0-1) # shape → min/max bounds
   ⧻◴ /◇⊂ ⍚(
-    ÷/∨. ⊃/-⊢        # base + vector
+    ⊃/-⊢             # base + vector
     ≡⍥⇌<0 ⟜:⟜÷⊙(:⟜-) # bounds table
     ⍜¯∩(⌊/↧) °⊟⍉     # integer range
     +⊙¤ ×⊙¤ +⟜(⇡+1-) # point array
