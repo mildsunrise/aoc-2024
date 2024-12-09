@@ -1,8 +1,7 @@
 &fras "input.txt"
 ⊜(□⊜⋕⊸≠@ )⊸≠@\n
 
-InRange ← ↥∩(/↧ ↧⊓≥≤1,3) ¯.
-IsSafe  ← InRange ↘1-↻¯1.
+IsSafe ← ↥∩(/↧ ↧⊓≥≤1,3) ¯. ⧈-
 
 RemoveOne ← ≡▽ /≠°⍉ ⇡↯2 ⧻⟜¤
 IsSafeB   ← /↥ IsSafe ⍉ RemoveOne
