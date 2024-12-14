@@ -1,4 +1,3 @@
-{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 {-# LANGUAGE ViewPatterns #-}
 import Data.List.Split (splitOn)
 import Data.Foldable (foldrM)
