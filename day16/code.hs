@@ -1,9 +1,10 @@
 {-# LANGUAGE ViewPatterns #-}
-import Data.Array (array, assocs, bounds, (!), Ix (range))
-import Data.Graph.Inductive (Gr, mkMapGraph, mkNode_, lab, spTree, LPath (LP))
-import Data.Maybe (fromJust)
-import Data.Function (on)
+import Data.Array (array, assocs, (!))
 import Data.Containers.ListUtils (nubOrd)
+import qualified Data.Set as Set
+import qualified Data.Map as Map
+import Control.Arrow (Arrow(first, second))
+import Data.List (mapAccumL)
 
 main = getContents >>= (print . parts . lines)
 
@@ -21,43 +22,64 @@ mapToArray lines = array ((0, 0), bound) entries
 
 headings = [(0, -1), (1, 0), (0, 1), (-1, 0)]
 
+dijkstra edges start = step Set.empty
+    (Set.singleton (0, start))
+    (Map.singleton start (0, []))
+  where
+    step _ queue dists | Set.null queue = dists
+    step visited (Set.deleteFindMin -> ((d, n), queue)) dists =
+        case Set.alterF (, True) n visited of
+            (True, _) -> step visited queue dists
+            (False, visited) -> step visited queue' dists'
+      where
+        nodes = map (first (+ d)) (edges n)
+        queue' = foldl (flip Set.insert) queue nodes
+        dists' = foldl (flip (updateDist n)) dists nodes
+
+updateDist n (d', n') = Map.alter merge n'
+  where
+    merge (Just (d, pred)) | d <= d' =
+        Just (d, [n | d == d'] ++ pred)
+    merge _ = Just (d', [n])
+
+dfs_ edges = snd . dfs edges Set.empty
+
+dfs edges visited node =
+    case Set.alterF (, True) node visited of
+        (True, _) -> (visited, [])
+        (False, visited) ->
+            second ((node :) . concat) $
+            mapAccumL (dfs edges) visited (edges node)
+
+dfs__ edges node =
+    node : concatMap (dfs__ edges) (edges node)
+
 
 -- PARTS
 
-findCell c =
-    (\[(p, h)] -> p) .
-    filter ((== c) . snd) .
+data Node = Cell (Int, Int) Int | Won
+    deriving (Eq, Ord, Show)
+
+findStart =
+    (\[(pos, _)] -> Cell pos 1) .
+    filter ((== 'S') . snd) .
     assocs
 
-nodes =
-    concatMap (\(p,_) -> map (p,) [0..3]) .
-    filter ((/= '#') . snd) .
-    assocs
-
-edges grid n@(pos, h) = fwd ++ map turn [1, -1]
+edges grid Won = []
+edges grid (Cell pos h) =
+    [(0, Won) | grid ! pos == 'E'] ++
+    [(1, Cell pos' h) | grid ! pos' /= '#'] ++
+    map (\h -> (1000, Cell pos (h `mod` 4))) [h - 1, h + 1]
   where
     pos' = pzip (+) pos (headings !! h)
-    fwd = [(n, (pos', h), 1) | grid ! pos' /= '#']
-    turn dh = (n, (pos, (h + dh) `mod` 4), 1000)
-
-toGraph grid = mkMapGraph @_ @Gr
-    (nodes grid)
-    (concatMap (edges grid) (nodes grid))
 
 part (mapToArray -> grid) =
-    filter ((== end) . head . snd) $
-    map (\(LP path@((_,d):_)) -> (d, map nodePos path)) $
-    spTree (fst $ mkNode_ nm (start, 1)) graph
-  where
-    [start, end] = map (`findCell` grid) ['S', 'E']
-    (graph, nm) = toGraph grid
-    nodePos (lab graph -> Just (pos, _), _) = pos
+    dijkstra (edges grid) (findStart grid)
 
-spotsToSit paths@(first:_) =
-    length $
-    nubOrd $
-    concatMap snd $
-    takeWhile (on (==) fst first) paths
+spotsToSit dists =
+    length $ nubOrd $
+    map (\(Cell pos _) -> pos) $
+    tail $ dfs_ (fmap snd dists Map.!) Won
 
-part1 = fst . head . part
+part1 = fst . (Map.! Won) . part
 part2 = spotsToSit . part
