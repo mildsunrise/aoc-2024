@@ -17,9 +17,9 @@ part canRemove =
     where
     isSafe = not . null . foldM takeItem (Nothing, canRemove)
 
-takeItem (prev, canRemove) x = map snd $ filter fst [
-    (canAccept prev x, (Just x, canRemove)),
-    (canRemove,        (prev,   False))]
+takeItem (prev, canRemove) x =
+    [(prev,   False)     | canRemove] ++
+    [(Just x, canRemove) | canAccept prev x]
 
 canAccept Nothing     _ = True
 canAccept (Just prev) x = inRange (1, 3) (x - prev)
