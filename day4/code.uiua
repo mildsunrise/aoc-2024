@@ -1,0 +1,16 @@
+&fras "input.txt"
+⊜∘ ⊸≠@\n
+
+PartA ← (
+  {⍥(⍉⇌.)3}              # 4 directions
+  ⊂ ⍚(⍉ ⊞⬚@ ↻ ⍉⊟.⇡4 ¤) . # add diagonals
+  ≡(/+♭ ◇⌕"XMAS")        # count hits
+)
+PartB ← (
+  ⍜⍉(¤¤) ⊚=@A.   # find As
+  + ¤⊟⍉⟜×⊟..¯1_1 # prepare indices
+  ≡≡⍆ ⬚@ ⊡       # find surrounding
+  /↧/↧ =¤"MS" ⍉  # count hits
+)
+
+∩/+ ⊃PartA PartB
