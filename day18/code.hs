@@ -18,16 +18,16 @@ pzip f (a, b) (c, d) = (f a c, f b d)
 headings = [(0, -1), (1, 0), (0, 1), (-1, 0)]
 
 bfsStep edges (visited, nodes) =
-    (Set.union nodes visited,) $
+    (\x -> (Set.union x visited, x Set.\\ visited)) $
     Set.fromList $
     concatMap edges $
-    Set.toList (nodes Set.\\ visited)
+    Set.toList nodes
 
 bfs edges start =
     takeWhile (not . null) $
     map (Set.toList . snd) $
     iterate (bfsStep edges)
-    (Set.empty, Set.singleton start)
+    (Set.singleton start, Set.singleton start)
 
 bisect pred lo hi
     | mid == lo = hi
